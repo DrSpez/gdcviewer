@@ -14,14 +14,28 @@ def index():
 
 @app.route('/get/deployed', methods=['GET'])
 def get_deployed():
-    commands = {s: 'salt -G service:{} tungsten.deployed --out json'.format(s)
-                for s in config.services}
-    # commands = {'date service': 'date', 'ls service': 'ls',
-    #             'la service': 'ls -a', 'lt service': 'ls -t'}
-    deployed = {s: check_output(cmd.split()) for s, cmd in commands.items()}
+    
+    deployed = {}
+    for service in config.services:
+        deployed[service] = get_salt_json(service, 'tungsten.deployed')
 
     return jsonify({'host': socket.gethostname(), 'deployed': deployed})
 
 
+@app.route('/get/ip_addrs', methods=['GET'])
+def get_ip_address():
+    
+    ip_addrs = {}
+    for service in config.services:
+        ip_addrs[service] = get_salt_json(service, 'network.ip_addrs')
+
+    return jsonify({'host': socket.gethostname(), 'ip_addrs': ip_addrs})
+
+
+def get_salt_json(service, command):
+    full_command = 'salt -G service:{} {} --out json'.format(service, command)
+    return {command: check_output(full_command.split())}
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8888, host='0.0.0.0')
