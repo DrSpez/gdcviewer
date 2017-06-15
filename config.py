@@ -1,0 +1,1 @@
+services = ['esbuild', 'api', 'portal']
