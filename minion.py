@@ -1,6 +1,7 @@
 from flask import Flask, jsonify
 from subprocess import check_output
 import socket
+import json
 
 import config
 
@@ -34,8 +35,11 @@ def get_ip_address():
 
 def get_salt_json(service, command):
     full_command = 'salt -G service:{} {} --out json'.format(service, command)
-    return {command: check_output(full_command.split())}
+    output = check_output(full_command.split())
+    json_output = json.loads(output)
+
+    return {command: json_output}
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8888, host='0.0.0.0')
+    app.run(debug=config.debug, port=config.minion_port, host='0.0.0.0')
