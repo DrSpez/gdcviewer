@@ -1,6 +1,6 @@
 debug = True
 
-services = ['esbuild', 'api', 'portal']
+services = ['esbuild', 'api', 'api-legacy', 'portal', 'legacy-portal', 'signpost']
 minions = ['172.21.26.49']
 
 minion_port = 8888
