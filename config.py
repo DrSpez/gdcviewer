@@ -3,9 +3,9 @@ import yaml
 
 
 ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
-DB_DIR = os.path.join(ROOT_DIR, '.gdc')
-DB_FILE = os.path.join(DB_DIR, 'database.json')
-MINIONS_FILE = os.path.join(DB_DIR, 'minions.yaml')
+SECRET_DIR = os.path.join(ROOT_DIR, '.gdc')
+MINIONS_FILE = os.path.join(SECRET_DIR, 'minions.yaml')
+DB_FILE = os.path.join(SECRET_DIR, 'database.json')
 
 debug = True
 

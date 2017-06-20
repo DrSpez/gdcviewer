@@ -1,4 +1,6 @@
 import os
+import json
+
 import config
 
 
@@ -16,6 +18,26 @@ def init_database():
         open(config.DB_FILE, 'w').close()
 
 
+def read_data():
+    try:
+        return json.loads(open(config.DB_FILE, 'r').read())
+    except:
+        return {}
+
+
+def save_data(data):
+    old_data = read_data()
+
+    for doc in data:
+        old_data[doc['label']] = doc
+
+    with open(config.DB_FILE, 'w') as f:
+        f.write(json.dumps(old_data))
+
+    return old_data
+
+
 if __name__ == '__main__':
-    init_database()
+    data = save_data([{'label': 'my', 'lol': {'asdf': 1234}},
+                      {'label': 'ik', 'lol': {'asdf': 4321}}])
 

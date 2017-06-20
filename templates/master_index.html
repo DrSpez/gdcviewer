@@ -1,17 +1,25 @@
+<h2>Reload cluster data:</h2>
+    <form action="" method=post><p>
+        <input type=submit value="Reload">
+    </form>
 <div>
+
 {% for cluster in data %}
-    <div>
     <hr><hr>
-    {{ cluster.label }} <br> {{ cluster.host_name }} <br> {{ cluster.host_ip }} <p>
-    {% for service_name, service_minions in cluster.services.items() %}
-        <hr>
-        {{ service_name }}
-        <hr>
-        {% for minion in service_minions %}
-            {{ minion.host_name }} <br> {{ minion.host_ip }} <br>
-            Deployed: {{minion.deployed}} <p>
+    <h1>{{ cluster.label }} </h1>
+    <h3>{{ cluster.host_name }} <br> {{ cluster.host_ip }} </h3>
+    <table>
+        <tr><th>Service</th><th>Minion</th><th>IP</th><th>Deployed</th></tr>
+        {% for service_name, service_minions in cluster.services.items() %}
+            
+            {% for minion in service_minions %}
+            <tr>
+                <th align='right'>{{ service_name }}</th>
+                <th>{{ minion.host_name }}</th>
+                <th>{{ minion.host_ip }}</th>
+                <th>{{minion.deployed}}</th>
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
-    </div>
+    </table >
 {% endfor %}
 </div>

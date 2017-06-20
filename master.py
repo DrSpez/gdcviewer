@@ -1,7 +1,8 @@
 import requests
 import json
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
+import database as db
 import config
 import test_data
 
@@ -9,16 +10,20 @@ import test_data
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    data = get_data()
+    
+    if request.method == 'POST':
+        data = get_data()
+    else:
+        data = db.read_data().values()
 
     return render_template('master_index.html', data=data)
 
 
 def get_data():
     data = []
-    for minion_ip in config.minions:
+    for minion_name, minion_ip in config.minions.items():
         minion_ips = query_get('ip_addrs', minion_ip)
         minion_deployed = query_get('deployed', minion_ip)
 
@@ -35,11 +40,13 @@ def get_data():
                     'deployed': minion_deployed['deployed'][service][worker]
                     })
 
-        cluster_data = {'label': label,
+        cluster_data = {'label': minion_name,
                         'host_name': host_name,
                         'host_ip': minion_ip,
                         'services': services_info}
         data.append(cluster_data) 
+
+    db.save_data(data)
 
     return data
 
