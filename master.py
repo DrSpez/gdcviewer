@@ -21,7 +21,7 @@ def index():
     else:
         data = db.read_data().values()
 
-    return render_template('master_index.html', data=data)
+    return render_template('master_index.html', data=data, services=config.services)
 
 
 def get_data():

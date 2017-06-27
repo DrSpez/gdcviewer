@@ -9,7 +9,9 @@ DB_FILE = os.path.join(SECRET_DIR, 'database.json')
 
 debug = True
 
-services = ['esbuild', 'api', 'api-legacy', 'portal', 'legacy-portal', 'signpost']
+services = {'esbuild': 'esbuild', 'api': 'gdcapi', 'api-legacy': 'gdcapi',
+            'portal': 'portal-ui', 'legacy-portal': 'portal-ui-legacy',
+            'signpost': 'signpost'}
 endpoints = ['ip_addrs', 'deployed']
 
 minions = yaml.safe_load(open(MINIONS_FILE, 'r'))

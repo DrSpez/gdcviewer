@@ -17,13 +17,17 @@
     <table class="table table-bordered table-hover">
         <tr><th>Service</th><th>Minion</th><th>IP</th><th>Deployed</th></tr>
         {% for service_name, service_minions in cluster.services.items() %}
-            
             {% for minion in service_minions %}
-            <tr>
-                <td class="text-right">{{ service_name }}</td>
-                <td>{{ minion.host_name }}</td>
-                <td>{{ minion.host_ip }}</td>
-                <td>{{minion.deployed}}</td>
+                <tr>
+                    <td class="text-right">{{ service_name }}</td>
+                    <td>{{ minion.host_name }}</td>
+                    <td>{{ minion.host_ip }}</td>
+                    <td>
+                        <a href=https://github.com/NCI-GDC/{{services.get(service_name)}}/commit/{{minion.deployed}}>
+                            {{minion.deployed}}
+                        </a>
+                    </td>
+                </tr>
             {% endfor %}
         {% endfor %}
     </table >
