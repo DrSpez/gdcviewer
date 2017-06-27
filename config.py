@@ -16,4 +16,4 @@ minions = yaml.safe_load(open(MINIONS_FILE, 'r'))
 minion_port = 8888
 
 master_host = '0.0.0.0'
-master_port = 5000
+master_port = 1234

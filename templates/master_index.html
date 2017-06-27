@@ -1,25 +1,33 @@
-<h2>Reload cluster data:</h2>
+{% extends "base.html" %}
+
+{% block content %}
+<hr><hr>
+<div class="col-sm-20">
     <form action="" method=post><p>
-        <input type=submit value="Reload">
+        <input type=submit value="Refresh cluster data" class="btn btn-info">
     </form>
 <div>
 
+<div class="col-sm-20">
 {% for cluster in data %}
-    <hr><hr>
+    <hr>
     <h1>{{ cluster.label }} </h1>
-    <h3>{{ cluster.host_name }} <br> {{ cluster.host_ip }} </h3>
-    <table>
+    <h4>{{ cluster.host_name }} <br>
+        <code> {{ cluster.host_ip }} </code> </h4>
+    <table class="table table-bordered table-hover">
         <tr><th>Service</th><th>Minion</th><th>IP</th><th>Deployed</th></tr>
         {% for service_name, service_minions in cluster.services.items() %}
             
             {% for minion in service_minions %}
             <tr>
-                <th align='right'>{{ service_name }}</th>
-                <th>{{ minion.host_name }}</th>
-                <th>{{ minion.host_ip }}</th>
-                <th>{{minion.deployed}}</th>
+                <td class="text-right">{{ service_name }}</td>
+                <td>{{ minion.host_name }}</td>
+                <td>{{ minion.host_ip }}</td>
+                <td>{{minion.deployed}}</td>
             {% endfor %}
         {% endfor %}
     </table >
 {% endfor %}
 </div>
+
+{% endblock %}
