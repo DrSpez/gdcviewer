@@ -2,6 +2,7 @@ import requests
 import multiprocessing
 import time
 import json
+import re
 from flask import Flask, render_template, request
 
 import database as db
@@ -53,6 +54,7 @@ def get_data():
         for service, workers_data in minion_ips['workers'].items():
             services_info.setdefault(service, [])
             for worker, worker_ip in workers_data.items():
+                worker_ip = ', '.join(re.compile('[\d+\.]+').findall(str(worker_ip)))
                 services_info[service].append({
                     'host_name': worker,
                     'host_ip': worker_ip,
