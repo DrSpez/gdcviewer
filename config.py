@@ -2,20 +2,32 @@ import os
 import yaml
 
 
-ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
-SECRET_DIR = os.path.join(ROOT_DIR, '.gdc')
-MINIONS_FILE = os.path.join(SECRET_DIR, 'minions.yaml')
-DB_FILE = os.path.join(SECRET_DIR, 'database.json')
+class BaseConfig:
+    debug = True
 
-debug = True
+    ROOT_DIR = os.path.dirname(os.path.realpath(__file__))
+    SECRET_DIR = os.path.join(ROOT_DIR, '.gdc')
+    SERVICES = {
+                'esbuild': 'esbuild', 'api': 'gdcapi', 'api-legacy': 'gdcapi',
+                'postgres': 'postgres-cloner', 'signpost': 'signpost',
+                'portal': 'portal-ui', 'legacy-portal': 'portal-ui-legacy',
+                }
+    ENDPOINTS = ['ip_addrs', 'deployed']
+    HOST = '0.0.0.0'
 
-services = {'esbuild': 'esbuild', 'api': 'gdcapi', 'api-legacy': 'gdcapi',
-            'portal': 'portal-ui', 'legacy-portal': 'portal-ui-legacy',
-            'signpost': 'signpost'}
-endpoints = ['ip_addrs', 'deployed']
 
-minions = yaml.safe_load(open(MINIONS_FILE, 'r'))
-minion_port = 8888
+class MinionConfig(BaseConfig):
+    def __init__(self):
+        self.PORT = 8888
 
-master_host = '0.0.0.0'
-master_port = 1234
+
+class MasterConfig(BaseConfig):
+    def __init__(self):
+        self.PORT = 1234
+        self.MINION_PORT = MinionConfig().PORT
+
+        self.MINIONS_FILE = os.path.join(BaseConfig.SECRET_DIR, 'minions.yaml')
+        self.DB_FILE = os.path.join(BaseConfig.SECRET_DIR, 'database.json')
+
+        self.MINIONS = yaml.safe_load(open(self.MINIONS_FILE, 'r'))
+

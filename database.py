@@ -1,7 +1,9 @@
 import os
 import json
 
-import config
+from config import MasterConfig
+
+config = MasterConfig()
 
 
 def init_database():
